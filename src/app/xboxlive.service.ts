@@ -52,15 +52,14 @@ export class XboxliveService {
 
   AuthenticatewithMinecraft(userhash : any, xsts_token: any){
     let data = `{
-      "identityToken" : "XBL3.0 x=${userhash};
-      ${xsts_token}",
+      "identityToken" : "XBL3.0 x=${userhash};${xsts_token}",
       "ensureLegacyEnabled" : true
     }`;
 
+    console.log(data);
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Access-Control-Allow-Origin' : '*'
+      'Accept': 'application/json'
     })
     return this.http.post('https://api.minecraftservices.com/authentication/login_with_xbox', data, { headers: headers});
 }

@@ -3,6 +3,8 @@ import { MsalBroadcastService, MsalService } from '@azure/msal-angular';
 import { InteractionStatus, AuthenticationResult } from '@azure/msal-browser';
 import { filter, Subject, takeUntil } from 'rxjs';
 import { XboxliveService } from '../xboxlive.service';
+import { invoke } from '@tauri-apps/api/tauri'
+
 
 @Component({
   selector: 'app-login',
@@ -10,7 +12,7 @@ import { XboxliveService } from '../xboxlive.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-
+  
   xbltoken = '';
   xststoken = '';
   tokenminecraft = '';
@@ -57,6 +59,10 @@ export class LoginComponent implements OnInit {
     this.xbox.ObtainXSTS(this.xbltoken).subscribe((b : any)=>{
       this.xststoken = b.Token;
       this.obtaintokenminecraft();
+      //invoke('greet');
+      /*invoke<string>("greet").then((text : any) => {
+        console.log(text);
+      });*/
     })
   }
 
