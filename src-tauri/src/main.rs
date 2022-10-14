@@ -74,10 +74,10 @@ async fn token() -> Result<String , reqwest::Error> {
 
 mod xboxlive;
 
-#[tokio::main]
-async fn main() {
+//#[tokio::main]
+fn main() {
     tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![xboxlive::main])
+    .invoke_handler(tauri::generate_handler![xboxlive::funxbox])
     .run(tauri::generate_context!())
     .expect("error while running tauri application")
 }

@@ -77,7 +77,7 @@ struct MinecraftProfileResponse {
 
 
 #[tauri::command]
-pub async fn main() -> Result<(), Box<dyn std::error::Error>> {
+pub async fn funxbox() -> Result<(), Box<dyn std::error::Error>> {
     let client = Client::new();
 
     // step 1: attempt to login to microsoft account (OAuth flow)
