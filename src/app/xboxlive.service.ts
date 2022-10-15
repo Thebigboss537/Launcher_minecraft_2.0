@@ -1,15 +1,19 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
+
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class XboxliveService {
 
   constructor(private http: HttpClient) { }
-
   
-
+  
+  
+  
   AuthenticatewithXboxLive(token:any){
     let data = `{
       "Properties": {
@@ -50,22 +54,10 @@ export class XboxliveService {
   }
 
 
-  AuthenticatewithMinecraft(userhash : any, xsts_token: any){
-    let data = `{
-      "identityToken" : "XBL3.0 x=${userhash};${xsts_token}",
-      "ensureLegacyEnabled" : true
-    }`;
-
-    console.log(data);
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    })
-    return this.http.post('https://api.minecraftservices.com/authentication/login_with_xbox', data, { headers: headers});
-}
+  
 
 
-  /*CheckingGameOwnership(tokenminecraft : any){
+  CheckingGameOwnership(tokenminecraft : any){
     
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -74,5 +66,9 @@ export class XboxliveService {
     })
 
     return this.http.get('https://api.minecraftservices.com/entitlements/mcstore', { headers: headers});
-  }*/
+  }
+
+
+
+
 }

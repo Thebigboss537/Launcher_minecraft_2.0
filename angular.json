@@ -74,6 +74,7 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "launcher_minecraft_20:build"
+            
           }
         }
       }

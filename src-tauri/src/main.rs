@@ -1,52 +1,6 @@
-#![cfg_attr(
-    all(not(debug_assertions), target_os = "windows"),
-    windows_subsystem = "windows"
-)]
-
-use std::{
-    /*collections::HashMap,*/
-    fs/* ,
-    io::{self, Write},*/
-};
-
-use reqwest::Client;
-use serde::{Deserialize, Serialize};
-use serde_json::json;
-
-//static tokenxbox:&'static str = "YOUR STRING HERE";
-
-// Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-/*#[tauri::command]
-async fn greet()-> String  {
-    /*let token= token().await;
-    format!("Result: {:#?}", token)*/
-    format!("I was invoked from JS!")
-}*/
-
-
-
-#[derive(Deserialize, Serialize, Debug)]
-struct MinecraftAuthenticationResponse {
-    /// Some UUID of the account
-    username: String,
-    /// The minecraft JWT access token
-    access_token: String,
-    /// The type of access token
-    token_type: String,
-    /// How many seconds until the token expires
-    expires_in: u32,
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-struct MinecraftProfileResponse {
-    /// The UUID of the account
-    id: String,
-    /// The name of the user
-    name: String,
-}
 
 /*#[tauri::command]
-async fn token() -> Result<String , reqwest::Error> {
+async fn token() -> Result {
     let client = Client::new();
     let minecraft_resp: MinecraftAuthenticationResponse = Client
         .post("https://api.minecraftservices.com/authentication/login_with_xbox")
@@ -72,12 +26,76 @@ async fn token() -> Result<String , reqwest::Error> {
   Ok(minecraft_token.to_string())
 }*/
 
-mod xboxlive;
+use std::any::Any;
+
+use oauth2::AuthType;
+use serde_json::json;
+use reqwest::Client;
+use reqwest::StatusCode;
+use tokio::time::error;
+use reqwest::Error;
+use serde::{ Serialize, Deserialize };
+
+#[tauri::command]
+async fn principal(userhash: String, xststoken: String)-> String {
+    let a = asdsasda(userhash,xststoken).await;
+    format!("{:?}", a)
+}
+
+#[derive(Debug, Deserialize)]
+pub struct AuthResponse {
+    pub access_token: String,
+    pub token_type: String,
+}
+
+#[derive(Deserialize)]
+pub struct Profile {
+    pub id: String,
+    pub name: String,
+}
+
+
+
+async fn asdsasda(userhash: String,xststoken: String) ->  Result<String,Error> {
+    let client = Client::new();
+
+    let body1 = json!({
+        "identityToken" : format!("XBL3.0 x={};{}",userhash, xststoken),
+        "ensureLegacyEnabled" : true
+    });
+
+    let request_url1 = "https://api.minecraftservices.com/authentication/login_with_xbox";
+    let response1 = client
+        .post(request_url1)
+        .json(&body1)
+        .send().await?;
+        
+    let gist:AuthResponse = response1.json().await?;
+    let token:String = gist.access_token;
+    //println!("{:?}", token);
+    
+    
+
+    let request_url2 = "https://api.minecraftservices.com/minecraft/profile";
+    let response2:Profile = client
+        .get(request_url2)
+        .bearer_auth(&token)
+        .send().await?
+        .json().await?;
+        
+    let name = response2.name;
+    //let token:String = gist.access_token;
+
+
+    Ok(name)
+}
+
+
 
 //#[tokio::main]
 fn main() {
     tauri::Builder::default()
-    .invoke_handler(tauri::generate_handler![xboxlive::funxbox])
+    .invoke_handler(tauri::generate_handler![principal])
     .run(tauri::generate_context!())
     .expect("error while running tauri application")
 }

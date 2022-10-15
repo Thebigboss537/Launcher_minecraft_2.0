@@ -12,6 +12,10 @@
   },
   "tauri": {
     "allowlist": {
+      "http": {
+        "all": true, 
+        "request": true 
+      },
       "all": true
     },
     "bundle": {
@@ -58,7 +62,7 @@
         "fullscreen": false,
         "height": 600,
         "resizable": true,
-        "title": "launcher_minecraft_20",
+        "title": "launcher_minecraft",
         "width": 800
       }
     ]

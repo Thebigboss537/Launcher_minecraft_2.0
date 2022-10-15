@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   xststoken = '';
   tokenminecraft = '';
   uhs = '';
+  username = '';
   private token = '';
   loginDisplay = false;
   loginRequest = {
@@ -40,6 +41,7 @@ export class LoginComponent implements OnInit {
   login() {
     this.authService.loginPopup(this.loginRequest).subscribe((obsevable : AuthenticationResult) => {
       this.token = obsevable.accessToken;
+      //this.obtaintokenminecraft();
       this.xboxlive();
     });
     
@@ -58,20 +60,19 @@ export class LoginComponent implements OnInit {
   obtainxststoken(){
     this.xbox.ObtainXSTS(this.xbltoken).subscribe((b : any)=>{
       this.xststoken = b.Token;
-      this.obtaintokenminecraft();
-      //invoke('greet');
-      /*invoke<string>("greet").then((text : any) => {
+      //this.obtaintokenminecraft();
+      //invoke('principal');
+
+      invoke("principal", { userhash: this.uhs.toString(), xststoken: this.xststoken.toString() }).then((text: string) => {
+        this.username = text;
+      });
+      /*invoke<string>("principal").then((text : any) => {
         console.log(text);
       });*/
     })
   }
 
-  obtaintokenminecraft(){
-    this.xbox.AuthenticatewithMinecraft(this.uhs,this.xststoken).subscribe((a : any)=>{
-      /*console.log(a);
-      this.tokenminecraft = a.access_token;*/
-    })
-  }
+  
 
 
 
